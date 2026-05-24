@@ -5,7 +5,7 @@ import pandas as pd
 import pytest
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def sample_series() -> pd.Series:
     """Return a 500-point daily DatetimeIndex sine-wave series for testing.
 
