@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+  test:
+    build: .
+    container_name: anomalyforge_test
+    volumes:
+      - .:/app
+    environment:
+      - MPLBACKEND=Agg
+      - PYTHONDONTWRITEBYTECODE=1
+      - PYTHONPATH=/app
+    command: pytest tests/ -v --tb=short
+
+  app:
+    build: .
+    container_name: anomalyforge_app
+    ports:
+      - "8501:8501"
+    volumes:
+      - .:/app
+    environment:
+      - MPLBACKEND=Agg
+      - PYTHONPATH=/app
+      - STREAMLIT_SERVER_HEADLESS=true
+      - STREAMLIT_SERVER_FILE_WATCHER_TYPE=none
+    command: streamlit run app.py --server.port 8501 --server.address 0.0.0.0
