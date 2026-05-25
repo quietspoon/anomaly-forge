@@ -322,6 +322,19 @@ elif screen == "4. Benchmark":
         test_ratio = st.slider("Test ratio", 0.10, 0.40, 0.20, step=0.05)
         window_size_b = st.slider("Window size (samples)", 16, 128, 64, step=8)
         n_estimators = st.slider("IForest estimators", 50, 300, 100, step=50)
+        contamination_b = st.slider(
+            "Contamination (expected anomaly fraction)",
+            0.01, 0.40, 0.10, step=0.01,
+            help="Set this close to the actual anomaly rate in your data. "
+                 "Lower = fewer windows flagged as anomalous.",
+        )
+        threshold_pct = st.slider(
+            "Threshold percentile",
+            50, 99, 80, step=1,
+            help="Anomaly score percentile used as the classification threshold. "
+                 "Lower values flag more windows as anomalous, increasing recall. "
+                 "If Recall=0, try lowering this to 70–80.",
+        )
 
     if st.button("🚀 Run Benchmark"):
         config = BenchmarkConfig(
@@ -329,6 +342,8 @@ elif screen == "4. Benchmark":
             window_size=window_size_b,
             window_step=max(1, window_size_b // 8),
             iforest_n_estimators=n_estimators,
+            iforest_contamination=contamination_b,
+            iforest_threshold_percentile=float(threshold_pct),
         )
         with st.spinner("Training and evaluating models…"):
             try:
