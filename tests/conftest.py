@@ -1,8 +1,14 @@
 """Shared pytest fixtures for AnomalyForge test suite."""
 
+import os
+
 import numpy as np
 import pandas as pd
 import pytest
+
+# Ensure matplotlib uses a non-interactive backend in all environments
+# (matches MPLBACKEND=Agg set in docker-compose.yml)
+os.environ.setdefault("MPLBACKEND", "Agg")
 
 
 @pytest.fixture(scope="module")
